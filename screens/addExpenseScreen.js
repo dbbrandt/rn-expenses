@@ -1,4 +1,5 @@
 import {useEffect} from "react";
+import { SafeAreaView} from 'react-native';
 import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
 import Colors from "../constants/colors";
 
@@ -19,32 +20,36 @@ function AddExpenseScreen({help, visible, setVisible}) {
     }
 
     return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={visible}
-            onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-                setVisible(false);
-            }}>
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Add Expense</Text>
-                    <View style={styles.buttonContainer}>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setVisible(false)}>
-                            <Text style={styles.textStyle}>Cancel</Text>
-                        </Pressable>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={addExpenseHandler}>
-                            <Text style={styles.textStyle}>Save</Text>
-                        </Pressable>
+        <View style={styles.rootContainer}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setVisible(false);
+                }}>
+                <SafeAreaView style={styles.rootContainer}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Add Expense</Text>
+                        <View style={styles.buttonContainer}>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setVisible(false)}>
+                                <Text style={styles.textStyle}>Cancel</Text>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={addExpenseHandler}>
+                                <Text style={styles.textStyle}>Save</Text>
+                            </Pressable>
+                        </View>
                     </View>
                 </View>
-            </View>
-        </Modal>
+                </SafeAreaView>
+            </Modal>
+        </View>
     );
 }
 
@@ -52,23 +57,20 @@ export default AddExpenseScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+       flex: 1,
     },
     centeredView: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
+        marginTop: 10,
+        marginHorizontal: 10,
     },
     modalView: {
-        margin: 20,
+        flex: 1,
+        paddingTop: 10,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
         alignItems: 'center',
-        shadowColor: '#000',
+        shadowColor: 'black',
         shadowOffset: {
             width: 0,
             height: 2,
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     buttonContainer: {
-      flexDirection: 'row',
+        flexDirection: 'row',
     },
     button: {
         borderRadius: 20,
