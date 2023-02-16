@@ -11,7 +11,7 @@ import {Ionicons} from '@expo/vector-icons';
 import Colors from "./constants/colors";
 
 import AddExpenseScreen from "./screens/addExpenseScreen";
-import ExpensesScreen from "./screens/expensesScreen";
+import ExpensesListScreen from "./screens/expensesListScreen";
 
 import IconButton from "./components/iconButton";
 
@@ -27,10 +27,6 @@ const navTheme = {
 }
 
 export default function App() {
-    function addExpenseHandler() {
-        console.log('Add Expense');
-    }
-
     return (
         <Provider store={store}>
             <StatusBar style="light"/>
@@ -44,25 +40,28 @@ export default function App() {
                         headerStyle: {backgroundColor: Colors.tabsMain},
                         headerTintColor: Colors.tabsText,
                         tabBarActiveTintColor: Colors.tabsMain,
-                        headerRight: () => {
-                            return <IconButton icon='add' size={30} onPress={addExpenseHandler}/>;
-                        },
                     }}>
-                        <BottomTab.Screen name="Recent Expenses"
-                                          component={ExpensesScreen}
-                                          initialParams={{
-                                              initialRoute: 'MealsCategories',
-                                              goHome: false,
-                                          }}
-                                          options={{
-                                              tabBarLabel: 'Recent',
-                                              tabBarIcon: ({color, size}) =>
-                                                  <Ionicons name="home" color={color} size={size}/>
-                                          }}/>
-                        <BottomTab.Screen name="All Expenses" component={AddExpenseScreen} options={{
-                            tabBarIcon: ({color, size}) =>
-                                <Ionicons name="person" color={color} size={size}/>
-                        }}/>
+                        <BottomTab.Screen
+                            name="Recent Expenses"
+                            component={ExpensesListScreen}
+                            initialParams={{
+                                filter: 'recent',
+                            }}
+                            options={{
+                                tabBarLabel: 'Recent',
+                                tabBarIcon: ({color, size}) =>
+                                    <Ionicons name="md-hourglass-outline" color={color} size={size}/>
+                            }}/>
+                        <BottomTab.Screen
+                            name="All Expenses"
+                            initialParams={{
+                                filter: 'all',
+                            }}
+                            component={ExpensesListScreen}
+                            options={{
+                                tabBarIcon: ({color, size}) =>
+                                    <Ionicons name="calendar" color={color} size={size}/>
+                            }}/>
                     </BottomTab.Navigator>
                 </NavigationContainer>
             </ImageBackground>

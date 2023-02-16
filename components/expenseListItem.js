@@ -1,8 +1,9 @@
 import { Text } from 'react-native';
 
-function ExpenseListItem({item}) {
+function ExpenseListItem({item, filter}) {
+
     return (
-        <Text>{item.date}</Text>
+        <Text>{item.id}. {item.date}</Text>
     )
 }
 
