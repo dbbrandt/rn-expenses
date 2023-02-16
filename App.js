@@ -30,41 +30,41 @@ export default function App() {
     return (
         <Provider store={store}>
             <StatusBar style="light"/>
-            <ImageBackground source={require('./assets/images/background.png')}
-                             resizeMode="cover"
-                             style={styles.rootScreen}
-                             imageStyle={styles.backgroundImage}
-            >
-                <NavigationContainer theme={navTheme}>
-                    <BottomTab.Navigator screenOptions={{
-                        headerStyle: {backgroundColor: Colors.tabsMain},
-                        headerTintColor: Colors.tabsText,
-                        tabBarActiveTintColor: Colors.tabsMain,
-                    }}>
-                        <BottomTab.Screen
-                            name="Recent Expenses"
-                            component={ExpensesListScreen}
-                            initialParams={{
-                                filter: 'recent',
-                            }}
-                            options={{
-                                tabBarLabel: 'Recent',
-                                tabBarIcon: ({color, size}) =>
-                                    <Ionicons name="md-hourglass-outline" color={color} size={size}/>
-                            }}/>
-                        <BottomTab.Screen
-                            name="All Expenses"
-                            initialParams={{
-                                filter: 'all',
-                            }}
-                            component={ExpensesListScreen}
-                            options={{
-                                tabBarIcon: ({color, size}) =>
-                                    <Ionicons name="calendar" color={color} size={size}/>
-                            }}/>
-                    </BottomTab.Navigator>
-                </NavigationContainer>
-            </ImageBackground>
+                <ImageBackground source={require('./assets/images/background.png')}
+                                 resizeMode="cover"
+                                 style={styles.rootScreen}
+                                 imageStyle={styles.backgroundImage}
+                >
+                    <NavigationContainer theme={navTheme}>
+                        <BottomTab.Navigator screenOptions={{
+                            headerStyle: {backgroundColor: Colors.tabsMain},
+                            headerTintColor: Colors.tabsText,
+                            tabBarActiveTintColor: Colors.tabsMain,
+                        }}>
+                            <BottomTab.Screen
+                                name="Recent Expenses"
+                                component={ExpensesListScreen}
+                                initialParams={{
+                                    filter: 'recent',
+                                }}
+                                options={{
+                                    tabBarLabel: 'Recent',
+                                    tabBarIcon: ({color, size}) =>
+                                        <Ionicons name="md-hourglass-outline" color={color} size={size}/>
+                                }}/>
+                            <BottomTab.Screen
+                                name="All Expenses"
+                                initialParams={{
+                                    filter: 'all',
+                                }}
+                                component={ExpensesListScreen}
+                                options={{
+                                    tabBarIcon: ({color, size}) =>
+                                        <Ionicons name="calendar" color={color} size={size}/>
+                                }}/>
+                        </BottomTab.Navigator>
+                    </NavigationContainer>
+                </ImageBackground>
         </Provider>
     )
 }
