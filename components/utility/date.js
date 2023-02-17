@@ -21,6 +21,6 @@ export function formatDateString(dateString) {
     return formatDate(date);
 }
 
-export function secondsElapsed(dateString) {
-    return (now() - toDateTime(dateString)) / 1000;
+export function daysElapsed(dateString) {
+    return (now() - toDateTime(dateString)) / ( 1000 * 3600);
 }

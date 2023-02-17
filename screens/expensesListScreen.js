@@ -5,7 +5,7 @@ import ExpenseListItem from "../components/ui/expenseListItem";
 import {useLayoutEffect} from "react";
 import AddExpenseScreen from "./addExpenseScreen";
 import IconButton from "../components/ui/iconButton";
-import {secondsElapsed} from "../components/utility/date";
+import {daysElapsed} from "../components/utility/date";
 
 function ExpensesListScreen({route, navigation}) {
     const [addModalVisible, setAddModalVisible] = useState(false);
@@ -13,7 +13,7 @@ function ExpensesListScreen({route, navigation}) {
     const expenseData = useSelector((state) => state.expenses.expenseData);
     const [expenses, setExpenses] = useState(expenseData);
     let filter = route.params.filter;
-    const maxDiff = 10;
+    const maxDiff = 7;
 
 
     function addButtonHandler() {
@@ -29,7 +29,7 @@ function ExpensesListScreen({route, navigation}) {
         filter = route.params.filter;
         setExpenses(expenseData);
         if (filter !== 'all' && expenseData.length > 0) {
-            setExpenses(expenseData.filter((item) => secondsElapsed(item.date) <= maxDiff));
+            setExpenses(expenseData.filter((item) => daysElapsed(item.date) <= maxDiff));
         }
     }, [route, navigation, addModalVisible])
 
