@@ -1,10 +1,10 @@
 import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
+import { DateTimePickerAndroid } from 'react-native';
 import Colors from "../../constants/colors";
 import {formatDateString} from "../utility/date";
 
 function ExpenseListItem({item, filter}) {
     const {width} = useWindowDimensions();
-
     return (
         <View style={[styles.expenseContainer,{width: width - 10}]}>
             <View style={styles.textContainer}>
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.expenseBackground,
     },
     textContainer: {
-        flex: 5,
+        flex: 4,
     },
     textFormat: {
         padding: 2,

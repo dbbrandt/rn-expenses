@@ -1,140 +1,155 @@
-import {useEffect} from "react";
-import {ImageBackground, SafeAreaView} from 'react-native';
-import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
+import {useState} from 'react';
+import {View, Text, TextInput, StyleSheet, Platform, Pressable} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {useSelector, useDispatch} from 'react-redux';
+import {addExpense} from "../store/data";
+import {serializeDate, formatDate} from "../components/utility/date";
+import AddExpenseModal from "../components/ui/addExpenseModal";
 import Colors from "../constants/colors";
 
-import {useSelector, useDispatch, Provider} from 'react-redux';
-import {addExpense} from "../store/data";
-import {serializeDate, now} from "../components/utility/date";
+const isAndroid = Platform.OS === 'android';
 
-function AddExpenseScreen({help, visible, setVisible}) {
+function AddExpenseScreen({visible, setVisible}) {
     const expenseData = useSelector((state) => state.expenses.expenseData);
+    const [expenseAmount, setExpenseAmount] = useState(0);
+    const [expenseTitle, setExpenseTitle] = useState('');
+    const [expenseDate, setExpenseDate] = useState(new Date);
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const dispatch = useDispatch();
 
+    console.log(`Platform is  android is: ${isAndroid}`);
 
     function addExpenseHandler() {
         const id = expenseData.length + 1;
         // Storing a multi-value object in state
         dispatch(addExpense({
             id: id,
-            date: serializeDate(now()),
-            title: 'A new expense.',
-            amount: '20.23'
+            date: serializeDate(expenseDate),
+            title: expenseTitle,
+            amount: expenseAmount,
         }));
         setVisible(false);
+        setExpenseAmount(0);
+        setExpenseTitle('');
+        setExpenseDate(new Date);
     }
 
-    return (
-        <View style={styles.rootContainer}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={visible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setVisible(false);
-                }}>
-                <SafeAreaView style={styles.rootContainer}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                            <ImageBackground source={require('../assets/images/background.png')}
-                                             resizeMode="cover"
-                                             style={styles.imageStyle}
-                                             imageStyle={styles.backgroundImage}
-                            >
+    function amountInputHandler(enteredText) {
+        setExpenseAmount(enteredText);
+    }
 
-                                <View style={styles.textHeaderContainer}>
-                                    <Text style={styles.modalText}>Add Expense</Text>
-                                </View>
-                                <View style={styles.buttonContainer}>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => setVisible(false)}>
-                                        <Text style={styles.textStyle}>Cancel</Text>
-                                    </Pressable>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={addExpenseHandler}>
-                                        <Text style={styles.textStyle}>Save</Text>
-                                    </Pressable>
-                                </View>
-                            </ImageBackground>
-                        </View>
-                    </View>
-                </SafeAreaView>
-            </Modal>
+    function dateInputHandler(event, selectedDate) {
+        const currentDate = selectedDate;
+        setExpenseDate(currentDate);
+        setShowDatePicker(false);
+    }
+
+    function textInputHandler(enteredText) {
+        setExpenseTitle(enteredText);
+    }
+
+    function AndroidDateComponent() {
+        console.log(`showDatePicker: ${showDatePicker}`);
+        if (showDatePicker)
+            return (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={expenseDate}
+                    mode='date'
+                    onChange={dateInputHandler}
+                />
+            )
+        else
+            return (
+                <Pressable
+                    onPress={() => setShowDatePicker(true)}
+                >
+                    <Text style={{marginHorizontal: 10}}>{formatDate(expenseDate)}</Text>
+                </Pressable>
+            )
+    }
+
+    function DateComponent() {
+        if (isAndroid) {
+            return <AndroidDateComponent/>
+        } else {
+            return (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={expenseDate}
+                    mode='date'
+                    onChange={dateInputHandler}
+                />
+            )
+        }
+    }
+
+    return <AddExpenseModal
+        onSubmit={addExpenseHandler}
+        title='Add Expense'
+        visible={visible}
+        setVisible={setVisible}
+    >
+        <View style={styles.inputContainer}>
+            <View style={[styles.inputFieldContainer, styles.datePickerContainer]}>
+                <DateComponent/>
+            </View>
+            <View style={styles.inputFieldContainer}>
+                <TextInput
+                    style={[styles.inputField, styles.textInput]}
+                    maxLength={30}
+                    onChangeText={textInputHandler}
+                    value={expenseTitle}
+                />
+            </View>
+            <View style={styles.inputFieldContainer}>
+                <TextInput
+                    style={[styles.inputField, styles.numberInput]}
+                    maxLength={7}
+                    keyboardType="number-pad"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    onChangeText={amountInputHandler}
+                    value={expenseAmount}
+                />
+            </View>
         </View>
-    );
+    </AddExpenseModal>
 }
 
 export default AddExpenseScreen;
 
 const styles = StyleSheet.create({
-    rootContainer: {
-        flex: 1,
-        overflow: 'hidden',
-    },
-    centeredView: {
-        flex: 1,
-        marginTop: 10,
-        marginHorizontal: 10,
-    },
-    modalView: {
-        flex: 1,
-        backgroundColor: Colors.modelBackground,
-        borderRadius: 20,
-        alignItems: 'center',
-        shadowColor: 'black',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    textHeaderContainer: {
-        width: '100%',
-        padding: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        backgroundColor: Colors.modalHeader,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
+    inputContainer: {
         marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
     },
-    button: {
-        borderRadius: 20,
-        padding: 5,
-        elevation: 2,
-        margin: 4,
-        width: 75,
+    inputFieldContainer: {
+        borderWidth: 1,
+        marginVertical: 5,
+        marginHorizontal: 5,
+        backgroundColor: 'white',
+        borderRadius: 3,
     },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
-    textStyle: {
-        color: 'white',
+    inputField: {
+        fontSize: 18,
+        color: Colors.expenseText,
+        paddingHorizontal: 10,
         fontWeight: 'bold',
-        textAlign: 'center',
     },
-    modalText: {
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: Colors.modalText,
+    textInput: {
+        height: 40,
+        width: 200,
+        textAlign: 'left',
     },
-    imageStyle: {
-        flex: 1,
-        alignItems: 'center',
-        width: '100%',
+    numberInput: {
+        height: 40,
+        width: 100,
+        textAlign: 'right',
     },
-    backgroundImage: {
-        opacity: 0.5,
-        borderRadius: 20,
-        overflow: 'hidden',
-    },
-});
+    datePickerContainer: {
+        paddingRight: 5,
+        paddingVertical: isAndroid ? 5 : 0,
+    }
+})
