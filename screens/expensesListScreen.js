@@ -1,10 +1,11 @@
 import {useState} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
 import {useSelector} from "react-redux";
-import ExpenseListItem from "../components/expenseListItem";
+import ExpenseListItem from "../components/ui/expenseListItem";
 import {useLayoutEffect} from "react";
 import AddExpenseScreen from "./addExpenseScreen";
-import IconButton from "../components/iconButton";
+import IconButton from "../components/ui/iconButton";
+import {secondsElapsed} from "../components/utility/date";
 
 function ExpensesListScreen({route, navigation}) {
     const [addModalVisible, setAddModalVisible] = useState(false);
@@ -28,11 +29,7 @@ function ExpensesListScreen({route, navigation}) {
         filter = route.params.filter;
         setExpenses(expenseData);
         if (filter !== 'all' && expenseData.length > 0) {
-            setExpenses(expenseData.filter((item) => {
-                const dateDiff = (new Date - Date.parse(item.date)) / 1000;
-                // console.log(`Filter expenses date: now: ${now} itemDate: ${itemDate} diff: ${dateDiff}`);
-                return dateDiff <= maxDiff
-            }));
+            setExpenses(expenseData.filter((item) => secondsElapsed(item.date) <= maxDiff));
         }
     }, [route, navigation, addModalVisible])
 
@@ -42,12 +39,12 @@ function ExpensesListScreen({route, navigation}) {
 
     return (
         <View style={styles.expenseContainer}>
-            <AddExpenseScreen help='HELP' visible={addModalVisible} setVisible={setAddModalVisible}/>
             <View style={styles.listContainer}>
                 <FlatList data={expenses}
                           keyExtractor={(item) => item.id}
                           renderItem={({item}) => expenseList(item)}
                 />
+                <AddExpenseScreen help='HELP' visible={addModalVisible} setVisible={setAddModalVisible}/>
             </View>
         </View>
     )
@@ -61,7 +58,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
     },
 })

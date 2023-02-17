@@ -1,10 +1,11 @@
 import {useEffect} from "react";
-import { SafeAreaView} from 'react-native';
+import {ImageBackground, SafeAreaView} from 'react-native';
 import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
 import Colors from "../constants/colors";
 
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, Provider} from 'react-redux';
 import {addExpense} from "../store/data";
+import {serializeDate, now} from "../components/utility/date";
 
 function AddExpenseScreen({help, visible, setVisible}) {
     const expenseData = useSelector((state) => state.expenses.expenseData);
@@ -13,9 +14,13 @@ function AddExpenseScreen({help, visible, setVisible}) {
 
     function addExpenseHandler() {
         const id = expenseData.length + 1;
-        const now = new Date();
         // Storing a multi-value object in state
-        dispatch(addExpense({id: id, date: now.toLocaleString()}));
+        dispatch(addExpense({
+            id: id,
+            date: serializeDate(now()),
+            title: 'A new expense.',
+            amount: '20.23'
+        }));
         setVisible(false);
     }
 
@@ -30,23 +35,32 @@ function AddExpenseScreen({help, visible, setVisible}) {
                     setVisible(false);
                 }}>
                 <SafeAreaView style={styles.rootContainer}>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Add Expense</Text>
-                        <View style={styles.buttonContainer}>
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={() => setVisible(false)}>
-                                <Text style={styles.textStyle}>Cancel</Text>
-                            </Pressable>
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={addExpenseHandler}>
-                                <Text style={styles.textStyle}>Save</Text>
-                            </Pressable>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <ImageBackground source={require('../assets/images/background.png')}
+                                             resizeMode="cover"
+                                             style={styles.imageStyle}
+                                             imageStyle={styles.backgroundImage}
+                            >
+
+                                <View style={styles.textHeaderContainer}>
+                                    <Text style={styles.modalText}>Add Expense</Text>
+                                </View>
+                                <View style={styles.buttonContainer}>
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={() => setVisible(false)}>
+                                        <Text style={styles.textStyle}>Cancel</Text>
+                                    </Pressable>
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={addExpenseHandler}>
+                                        <Text style={styles.textStyle}>Save</Text>
+                                    </Pressable>
+                                </View>
+                            </ImageBackground>
                         </View>
                     </View>
-                </View>
                 </SafeAreaView>
             </Modal>
         </View>
@@ -57,7 +71,8 @@ export default AddExpenseScreen;
 
 const styles = StyleSheet.create({
     rootContainer: {
-       flex: 1,
+        flex: 1,
+        overflow: 'hidden',
     },
     centeredView: {
         flex: 1,
@@ -66,8 +81,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
         flex: 1,
-        paddingTop: 10,
-        backgroundColor: 'white',
+        backgroundColor: Colors.modelBackground,
         borderRadius: 20,
         alignItems: 'center',
         shadowColor: 'black',
@@ -79,8 +93,16 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
+    textHeaderContainer: {
+        width: '100%',
+        padding: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        backgroundColor: Colors.modalHeader,
+    },
     buttonContainer: {
         flexDirection: 'row',
+        marginTop: 20,
     },
     button: {
         borderRadius: 20,
@@ -101,7 +123,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     modalText: {
-        marginBottom: 15,
         textAlign: 'center',
+        fontWeight: 'bold',
+        color: Colors.modalText,
+    },
+    imageStyle: {
+        flex: 1,
+        alignItems: 'center',
+        width: '100%',
+    },
+    backgroundImage: {
+        opacity: 0.5,
+        borderRadius: 20,
+        overflow: 'hidden',
     },
 });

@@ -13,7 +13,7 @@ import Colors from "./constants/colors";
 import AddExpenseScreen from "./screens/addExpenseScreen";
 import ExpensesListScreen from "./screens/expensesListScreen";
 
-import IconButton from "./components/iconButton";
+import IconButton from "./components/ui/iconButton";
 
 const BottomTab = createBottomTabNavigator();
 

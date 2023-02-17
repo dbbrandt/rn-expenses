@@ -8,10 +8,10 @@ const expenseSlice = createSlice({
     // With redux toolkit you can mutate state unlike plain redux because the toolkit takes care of it.
     reducers: {
         addSomeData: (state, action) => {
-            const { id, name, date, amount } = action.payload;
+            const { id, title, date, amount } = action.payload;
             state.expenseData.push({
                 id: action.payload.id,
-                name: name,
+                title: title,
                 date: date,
                 amount: amount,
             });
