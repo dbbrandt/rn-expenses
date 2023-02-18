@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         padding: 5,
         borderRadius: 5,
-        backgroundColor: Colors.expenseBackground,
+        backgroundColor: Colors.tabsMain,
     },
     textContainer: {
         flex: 4,
