@@ -1,20 +1,26 @@
-import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
-import { DateTimePickerAndroid } from 'react-native';
+import {View, Text, StyleSheet, Pressable, useWindowDimensions} from 'react-native';
+import {DateTimePickerAndroid} from 'react-native';
 import Colors from "../../constants/colors";
 import {formatDateString} from "../utility/date";
 
-function ExpenseListItem({item, filter}) {
+function ExpenseListItem({item, onPress}) {
     const {width} = useWindowDimensions();
     return (
-        <View style={[styles.expenseContainer,{width: width - 10}]}>
-            <View style={styles.textContainer}>
-                <Text style={styles.textFormat}>{item.title}</Text>
-                <Text style={styles.textFormat}>{formatDateString(item.date)}</Text>
+        <Pressable
+            onPress={onPress}
+            style={({pressed}) => pressed && styles.pressed}
+            android_ripple={{color: Colors.primary600}}
+        >
+            <View style={[styles.expenseContainer, {width: width - 10}]}>
+                <View style={styles.textContainer}>
+                    <Text style={styles.textFormat}>{item.title}</Text>
+                    <Text style={styles.textFormat}>{formatDateString(item.date)}</Text>
+                </View>
+                <View style={styles.amountContainer}>
+                    <Text style={styles.amountFormat}>{item.amount}</Text>
+                </View>
             </View>
-            <View style={styles.amountContainer}>
-                <Text style={styles.amountFormat}>{item.amount}</Text>
-            </View>
-        </View>
+        </Pressable>
     )
 }
 
@@ -28,6 +34,9 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 5,
         backgroundColor: Colors.tabsMain,
+    },
+    pressed: {
+        opacity: 0.75,
     },
     textContainer: {
         flex: 4,

@@ -10,7 +10,6 @@ import {StyleSheet, ImageBackground} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import Colors from "./constants/colors";
 
-import AddExpenseScreen from "./screens/addExpenseScreen";
 import ExpensesListScreen from "./screens/expensesListScreen";
 
 import IconButton from "./components/ui/iconButton";

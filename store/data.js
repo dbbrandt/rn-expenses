@@ -7,21 +7,33 @@ const expenseSlice = createSlice({
     },
     // With redux toolkit you can mutate state unlike plain redux because the toolkit takes care of it.
     reducers: {
-        addSomeData: (state, action) => {
+        addExpense: (state, action) => {
             const { id, title, date, amount } = action.payload;
             state.expenseData.push({
-                id: action.payload.id,
+                id: id,
                 title: title,
                 date: date,
                 amount: amount,
             });
         },
-        removeSomeData: (state, action) => {
+        updateExpense: (state, action) => {
+            const { id, title, date, amount } = action.payload;
+            let index = state.expenseData.findIndex(x => x.id === id);
+            console.log(`updateSameData object id: ${id} found: ${index}`);
+            state.expenseData[index] = {
+                id: id,
+                title: title,
+                date: date,
+                amount: amount,
+            };
+        },
+        removeExpense: (state, action) => {
             state.someData = state.someData.filter((item) => item.id != action.payload.id);
         }
     }
 });
 
-export const addExpense = expenseSlice.actions.addSomeData;
-export const removeSomeData = expenseSlice.actions.removeSomeData;
+export const addExpense = expenseSlice.actions.addExpense;
+export const updateExpense = expenseSlice.actions.updateExpense;
+export const removeExpense = expenseSlice.actions.removeExpense;
 export default expenseSlice.reducer;

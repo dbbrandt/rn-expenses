@@ -1,8 +1,9 @@
 import {ImageBackground, SafeAreaView} from 'react-native';
 import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
 import Colors from "../../constants/colors";
+import ExpenseForm from "./expenseForm";
 
-function AddExpenseModal({children, title, onSubmit, visible, setVisible}) {
+function ExpenseModal({ modalTitle, date, title, amount, onSubmit, visible, setVisible}) {
     return (
         <View style={styles.rootContainer}>
             <Modal
@@ -23,21 +24,15 @@ function AddExpenseModal({children, title, onSubmit, visible, setVisible}) {
                             >
 
                                 <View style={styles.textHeaderContainer}>
-                                    <Text style={styles.modalText}>{title}</Text>
+                                    <Text style={styles.modalText}>{modalTitle}</Text>
                                 </View>
-                                {children}
-                                <View style={styles.buttonContainer}>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => setVisible(false)}>
-                                        <Text style={styles.textStyle}>Cancel</Text>
-                                    </Pressable>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={onSubmit}>
-                                        <Text style={styles.textStyle}>Save</Text>
-                                    </Pressable>
-                                </View>
+                                <ExpenseForm
+                                    date={date}
+                                    title={title}
+                                    amount={amount}
+                                    onSubmit={onSubmit}
+                                    onCancel={() => setVisible(false)}
+                                />
                             </ImageBackground>
                         </View>
                     </View>
@@ -47,7 +42,7 @@ function AddExpenseModal({children, title, onSubmit, visible, setVisible}) {
     );
 }
 
-export default AddExpenseModal;
+export default ExpenseModal;
 
 const styles = StyleSheet.create({
     rootContainer: {
@@ -79,28 +74,6 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         backgroundColor: Colors.modalHeader,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        marginTop: 20,
-    },
-    button: {
-        borderRadius: 20,
-        padding: 5,
-        elevation: 2,
-        margin: 4,
-        width: 75,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
     },
     modalText: {
         textAlign: 'center',
