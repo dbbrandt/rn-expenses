@@ -18,8 +18,7 @@ const expenseSlice = createSlice({
         },
         updateExpense: (state, action) => {
             const { id, title, date, amount } = action.payload;
-            let index = state.expenseData.findIndex(x => x.id === id);
-            console.log(`updateSameData object id: ${id} found: ${index}`);
+            const index = state.expenseData.findIndex(x => x.id === id);
             state.expenseData[index] = {
                 id: id,
                 title: title,
@@ -28,7 +27,7 @@ const expenseSlice = createSlice({
             };
         },
         removeExpense: (state, action) => {
-            state.someData = state.someData.filter((item) => item.id != action.payload.id);
+            state.expenseData = state.expenseData.filter((item) => item.id != action.payload.id);
         }
     }
 });

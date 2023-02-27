@@ -7,6 +7,7 @@ const Colors = {
     modalText: 'white',
     expenseBackground: '#4696be',
     expenseText: '#247399',
+    iconDark: '#0887c6',
 }
 
 export default Colors;

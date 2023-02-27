@@ -3,13 +3,12 @@ import Colors from "../../constants/colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {formatDate, toDateTime} from "../utility/date";
 import {useState} from "react";
+import IconButton from "./iconButton";
 
 const isAndroid = Platform.OS === 'android';
 
-function ExpenseForm({ date, title, amount, onSubmit, onCancel }) {
-    const formDate = date ? toDateTime(date) : new Date;
-    console.log(`ExpenseForm formDate: ${formDate}`);
-    // const [expenseDate, setExpenseDate] = useState(toDateTime(formDate));
+function ExpenseForm(params) {
+    const {date, title, amount, onSubmit, onCancel,  showDelete, onDelete} = params;
     const [expenseDate, setExpenseDate] = useState(new Date);
     const [expenseTitle, setExpenseTitle] = useState(title);
     const [expenseAmount, setExpenseAmount] = useState(amount);
@@ -24,20 +23,19 @@ function ExpenseForm({ date, title, amount, onSubmit, onCancel }) {
     }
 
     function dateInputHandler(event, selectedDate) {
-        const currentDate = selectedDate;
-        setExpenseDate(currentDate);
+        setExpenseDate(selectedDate);
         setShowDatePicker(false);
     }
 
     function titleInputHandler(enteredText) {
         setExpenseTitle(enteredText);
     }
+
     function amountInputHandler(enteredText) {
         setExpenseAmount(enteredText);
     }
 
     function AndroidDateComponent() {
-        console.log(`showDatePicker: ${showDatePicker}`);
         if (showDatePicker)
             return (
                 <DateTimePicker
@@ -73,50 +71,65 @@ function ExpenseForm({ date, title, amount, onSubmit, onCancel }) {
     }
 
     return (
-        <View style={styles.inputContainer}>
-            <View style={[styles.inputFieldContainer, styles.datePickerContainer]}>
-                <DateComponent/>
-            </View>
-            <View style={styles.inputFieldContainer}>
-                <TextInput
-                    style={[styles.inputField, styles.textInput]}
-                    maxLength={30}
-                    onChangeText={titleInputHandler}
-                    value={expenseTitle}
+        <>
+            {showDelete &&
+            <View style={styles.deleteContainer}>
+                <IconButton style={styles.deleteButtonContainer}
+                            icon='trash'
+                            color={Colors.iconDark}
+                            size={30}
+                            onPress={onDelete}
                 />
             </View>
-            <View style={styles.inputFieldContainer}>
-                <TextInput
-                    style={[styles.inputField, styles.numberInput]}
-                    maxLength={7}
-                    keyboardType="number-pad"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    onChangeText={amountInputHandler}
-                    value={expenseAmount}
-                />
+            }
+            <View style={[styles.inputContainer, {marginTop: showDelete ? 0 : 10}]}>
+                <View style={[styles.inputFieldContainer, styles.datePickerContainer]}>
+                    <DateComponent/>
+                </View>
+                <View style={styles.inputFieldContainer}>
+                    <TextInput
+                        style={[styles.inputField, styles.textInput]}
+                        maxLength={30}
+                        onChangeText={titleInputHandler}
+                        value={expenseTitle}
+                    />
+                </View>
+                <View style={styles.inputFieldContainer}>
+                    <TextInput
+                        style={[styles.inputField, styles.numberInput]}
+                        maxLength={7}
+                        keyboardType="number-pad"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        onChangeText={amountInputHandler}
+                        value={expenseAmount}
+                    />
+                </View>
+                <View style={styles.buttonContainer}>
+                    <Pressable
+                        style={styles.button}
+                        onPress={onCancel}>
+                        <Text style={styles.textStyle}>Cancel</Text>
+                    </Pressable>
+                    <Pressable
+                        style={styles.button}
+                        onPress={onFormSubmit}>
+                        <Text style={styles.textStyle}>Save</Text>
+                    </Pressable>
+                </View>
             </View>
-            <View style={styles.buttonContainer}>
-                <Pressable
-                    style={styles.button}
-                    onPress={onCancel}>
-                    <Text style={styles.textStyle}>Cancel</Text>
-                </Pressable>
-                <Pressable
-                    style={styles.button}
-                    onPress={onFormSubmit}>
-                    <Text style={styles.textStyle}>Save</Text>
-                </Pressable>
-            </View>
-        </View>
+        </>
     )
 }
 
 export default ExpenseForm;
 
 const styles = StyleSheet.create({
+    deleteContainer: {
+        width: '100%',
+        alignItems: 'flex-end',
+    },
     inputContainer: {
-        marginTop: 20,
         justifyContent: 'center',
         alignItems: 'flex-start',
     },

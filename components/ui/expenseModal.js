@@ -3,17 +3,15 @@ import {View, Text, StyleSheet, Modal, Pressable} from 'react-native';
 import Colors from "../../constants/colors";
 import ExpenseForm from "./expenseForm";
 
-function ExpenseModal({ modalTitle, date, title, amount, onSubmit, visible, setVisible}) {
+function ExpenseModal(params) {
+    const {visible, modalTitle, date, title, amount, onSubmit, onCancel, showDelete, onDelete } = params;
     return (
         <View style={styles.rootContainer}>
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={visible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setVisible(false);
-                }}>
+            >
                 <SafeAreaView style={styles.rootContainer}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
@@ -31,7 +29,9 @@ function ExpenseModal({ modalTitle, date, title, amount, onSubmit, visible, setV
                                     title={title}
                                     amount={amount}
                                     onSubmit={onSubmit}
-                                    onCancel={() => setVisible(false)}
+                                    onCancel={onCancel}
+                                    showDelete={showDelete}
+                                    onDelete={onDelete}
                                 />
                             </ImageBackground>
                         </View>
