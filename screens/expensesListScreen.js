@@ -66,8 +66,7 @@ function ExpensesListScreen({route, navigation}) {
     }
 
     function addExpenseHandler(date, title, amount) {
-        const id = expenseData.length + 1;
-        // Storing a multi-value object in state
+        const id = expenseData.reduce((prev, current) => (prev.id > current.id) ? prev.id : current.id,0) + 1;
         dispatch(addExpense({
             id: id,
             date: serializeDate(date),
@@ -91,6 +90,7 @@ function ExpensesListScreen({route, navigation}) {
         setUpdateModalVisible(false);
         setSelectedExpense(newExpense);
     }
+    console.log(expenseData);
 
     return (
         <View style={styles.expenseContainer}>
