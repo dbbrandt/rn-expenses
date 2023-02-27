@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {View, StyleSheet, FlatList, Alert} from 'react-native';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import ExpenseListItem from "../components/ui/expenseListItem";
 import {useLayoutEffect} from "react";
@@ -8,6 +8,7 @@ import {daysElapsed, serializeDate} from "../components/utility/date";
 import ExpenseModal from "../components/ui/expenseModal";
 import {addExpense, updateExpense, removeExpense} from "../store/data";
 import {alertPopUp} from "../components/utility/alertPopUp";
+import Colors from "../constants/colors";
 
 function ExpensesListScreen({route, navigation}) {
     const newExpense = {id: null, title: '', amount: '', date: new Date};
@@ -28,6 +29,10 @@ function ExpensesListScreen({route, navigation}) {
         setAddModalVisible(true);
     }
 
+    function showRecent() {
+        return (filter !== 'all' && expenseData.length > 0)
+    }
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => {
@@ -36,7 +41,7 @@ function ExpensesListScreen({route, navigation}) {
         });
         filter = route.params.filter;
         setExpenses(expenseData);
-        if (filter !== 'all' && expenseData.length > 0) {
+        if (showRecent()) {
             setExpenses(expenseData.filter((item) => daysElapsed(item.date) <= maxDiff));
         }
     }, [route, navigation, addModalVisible, updateModalVisible, expenseData])
@@ -66,7 +71,7 @@ function ExpensesListScreen({route, navigation}) {
     }
 
     function addExpenseHandler(date, title, amount) {
-        const id = expenseData.reduce((prev, current) => (prev.id > current.id) ? prev.id : current.id,0) + 1;
+        const id = expenseData.reduce((prev, current) => (prev.id > current.id) ? prev.id : current.id, 0) + 1;
         dispatch(addExpense({
             id: id,
             date: serializeDate(date),
@@ -90,10 +95,14 @@ function ExpensesListScreen({route, navigation}) {
         setUpdateModalVisible(false);
         setSelectedExpense(newExpense);
     }
+
     console.log(expenseData);
 
     return (
         <View style={styles.expenseContainer}>
+            {showRecent() &&
+            <Text style={styles.recentsContainer}>Showing expenses from last {maxDiff} days.</Text>
+            }
             <View style={styles.listContainer}>
                 <FlatList data={expenses}
                           keyExtractor={(item) => item.id}
@@ -133,7 +142,12 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         flex: 1,
-        // justifyContent: 'center',
         alignItems: 'center',
+    },
+    recentsContainer: {
+        padding: 10,
+        color: Colors.expenseText,
+        fontWeight: 'bold',
+        backgroundColor: Colors.modelBackground,
     },
 })
