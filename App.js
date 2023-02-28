@@ -38,7 +38,13 @@ export default function App() {
                         <BottomTab.Navigator screenOptions={{
                             headerStyle: {backgroundColor: Colors.tabsMain},
                             headerTintColor: Colors.tabsText,
-                            tabBarActiveTintColor: Colors.tabsMain,
+                            tabBarStyle: {backgroundColor: Colors.tabsMain},
+                            tabBarActiveTintColor: 'white',
+                            tabBarInactiveTintColor: Colors.tabsInactive,
+                            tabBarLabelStyle: {
+                                fontSize: 12,
+                                fontWeight: "bold",
+                            }
                         }}>
                             <BottomTab.Screen
                                 name="Recent Expenses"
@@ -49,7 +55,7 @@ export default function App() {
                                 options={{
                                     tabBarLabel: 'Recent',
                                     tabBarIcon: ({color, size}) =>
-                                        <Ionicons name="md-hourglass-outline" color={color} size={size}/>
+                                        <Ionicons name="hourglass" color={color} size={size}/>
                                 }}/>
                             <BottomTab.Screen
                                 name="All Expenses"

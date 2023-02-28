@@ -46,6 +46,12 @@ function ExpensesListScreen({route, navigation}) {
         }
     }, [route, navigation, addModalVisible, updateModalVisible, expenseData])
 
+    function ExpenseHeader() {
+        const total =  expenseData.reduce((accumulator, current) => accumulator + parseFloat(current.amount), 0);
+        const recentText =  showRecent() ? `Showing expenses from last ${maxDiff} days.` : '';
+        return <Text style={styles.headerContainer}>{recentText} Total: ${total.toLocaleString()}</Text>
+    }
+
     function expenseList(item) {
         return <ExpenseListItem
             item={item}
@@ -100,9 +106,7 @@ function ExpensesListScreen({route, navigation}) {
 
     return (
         <View style={styles.expenseContainer}>
-            {showRecent() &&
-            <Text style={styles.recentsContainer}>Showing expenses from last {maxDiff} days.</Text>
-            }
+            <ExpenseHeader/>
             <View style={styles.listContainer}>
                 <FlatList data={expenses}
                           keyExtractor={(item) => item.id}
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
-    recentsContainer: {
+    headerContainer: {
         padding: 10,
         color: Colors.expenseText,
         fontWeight: 'bold',

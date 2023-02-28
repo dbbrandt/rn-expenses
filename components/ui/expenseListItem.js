@@ -18,7 +18,7 @@ function ExpenseListItem({item, onPress}) {
                     <Text style={styles.textFormat}>{formatDateString(item.date)}</Text>
                 </View>
                 <View style={styles.amountContainer}>
-                    <Text style={styles.amountFormat}>{item.amount}</Text>
+                    <Text style={styles.amountFormat}>${parseFloat(item.amount).toLocaleString()}</Text>
                 </View>
             </View>
         </Pressable>
