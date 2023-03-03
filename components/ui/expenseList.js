@@ -40,8 +40,6 @@ function ExpenseList({route, navigation}) {
         />
     }
 
-//    if (!expenseData || expenseData.length === 0) return <Text>No expense items.</Text>
-
     return (
         <View style={styles.expenseContainer}>
             <ImageBackground source={require('../../assets/images/background.png')}

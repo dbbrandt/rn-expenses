@@ -6,7 +6,7 @@ import {Ionicons} from "@expo/vector-icons";
 
 const BottomTab = createBottomTabNavigator();
 
-function ExpensesListScreen({route, navigation}) {
+function ExpensesListScreen() {
     // This component is used by multiple paths and the filter update re-renders the screen.
     // let filter = route.params.filter;
     const maxRecentDays = 7;
@@ -19,13 +19,11 @@ function ExpensesListScreen({route, navigation}) {
         }
     }
 
-    function addButtonHandler() {
-        navigation.navigate('Add Expense');
-    }
-
     return (
+        // Note: screen options gets passed the navigation params so we can use them inside to return the  options
+        // See onPress for the header Button.
         <BottomTab.Navigator
-            screenOptions={{
+            screenOptions={({navigation}) => ({
                 headerStyle: {backgroundColor: Colors.tabsMain},
                 headerTintColor: Colors.tabsText,
                 tabBarStyle: {backgroundColor: Colors.tabsMain},
@@ -35,10 +33,15 @@ function ExpensesListScreen({route, navigation}) {
                     fontSize: 12,
                     fontWeight: "bold",
                 },
-                headerRight: () => {
-                    return <IconButton icon='add' size={30} onPress={addButtonHandler}/>;
-                }
-            }}
+                headerRight: ({tintColor}) => (
+                    <IconButton
+                        icon='add'
+                        size={30}
+                        color={tintColor}
+                        onPress={() => navigation.navigate('Add Expense')}
+                    />
+            )
+            })}
         >
             <BottomTab.Screen
                 name="Recent Expenses"
