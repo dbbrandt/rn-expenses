@@ -3,7 +3,8 @@ import {createSlice} from '@reduxjs/toolkit';
 const expenseSlice = createSlice({
     name: 'expenses',
     initialState: {
-        expenseData: []
+        expenseData: [],
+        currentId: null,
     },
     // With redux toolkit you can mutate state unlike plain redux because the toolkit takes care of it.
     reducers: {
@@ -28,6 +29,9 @@ const expenseSlice = createSlice({
         },
         removeExpense: (state, action) => {
             state.expenseData = state.expenseData.filter((item) => item.id != action.payload.id);
+        },
+        setCurrent: (state, action) => {
+            state.currentId = action.payload.id;
         }
     }
 });
@@ -35,4 +39,6 @@ const expenseSlice = createSlice({
 export const addExpense = expenseSlice.actions.addExpense;
 export const updateExpense = expenseSlice.actions.updateExpense;
 export const removeExpense = expenseSlice.actions.removeExpense;
+export const setCurrent = expenseSlice.actions.setCurrent;
+
 export default expenseSlice.reducer;

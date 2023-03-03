@@ -9,7 +9,7 @@ const isAndroid = Platform.OS === 'android';
 
 function ExpenseForm(params) {
     const {date, title, amount, onSubmit, onCancel,  showDelete, onDelete} = params;
-    const [expenseDate, setExpenseDate] = useState(new Date);
+    const [expenseDate, setExpenseDate] = useState(date);
     const [expenseTitle, setExpenseTitle] = useState(title);
     const [expenseAmount, setExpenseAmount] = useState(amount);
 

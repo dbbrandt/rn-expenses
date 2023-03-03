@@ -1,20 +1,16 @@
+import {StyleSheet, ImageBackground, View} from 'react-native';
 import {StatusBar} from 'expo-status-bar';
-
 import {NavigationContainer, DefaultTheme} from "@react-navigation/native";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-
+import {createStackNavigator} from "@react-navigation/stack";
+import {CardStyleInterpolators} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
 import {store} from "./store/store";
+import ExpensesListScreen from "./screens/ExpensesListScreen";
+import ExpenseFormScreen from "./screens/ExpenseFormScreen";
+import {serializeDate} from "./components/utility/date";
+import {addExpense} from "./store/data";
 
-import {StyleSheet, ImageBackground} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
-import Colors from "./constants/colors";
-
-import ExpensesListScreen from "./screens/expensesListScreen";
-
-import IconButton from "./components/ui/iconButton";
-
-const BottomTab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 //To use a background you need to make the default theme transparent
 const navTheme = {
@@ -26,50 +22,56 @@ const navTheme = {
 }
 
 export default function App() {
+
+
+    function ExpenseUpdateForm() {
+        return <ExpenseFormScreen
+            formTitle='Update Expense'
+            // onSubmit={updateExpenseHandler}
+            showDelete={true}
+            // onDelete={handleDeleteButton}
+        />
+    }
+
     return (
         <Provider store={store}>
             <StatusBar style="light"/>
-                <ImageBackground source={require('./assets/images/background.png')}
-                                 resizeMode="cover"
-                                 style={styles.rootScreen}
-                                 imageStyle={styles.backgroundImage}
-                >
-                    <NavigationContainer theme={navTheme}>
-                        <BottomTab.Navigator screenOptions={{
-                            headerStyle: {backgroundColor: Colors.tabsMain},
-                            headerTintColor: Colors.tabsText,
-                            tabBarStyle: {backgroundColor: Colors.tabsMain},
-                            tabBarActiveTintColor: 'white',
-                            tabBarInactiveTintColor: Colors.tabsInactive,
-                            tabBarLabelStyle: {
-                                fontSize: 12,
-                                fontWeight: "bold",
-                            }
+            <ImageBackground source={require('./assets/images/background.png')}
+                             resizeMode="cover"
+                             style={styles.rootScreen}
+                             imageStyle={styles.backgroundImage}
+            >
+                <NavigationContainer theme={navTheme}>
+                        <Stack.Navigator screenOptions={{
+                            headerShown: false,
+                            cardStyle: {presentation: 'transparentModal'},
+                            cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
                         }}>
-                            <BottomTab.Screen
-                                name="Recent Expenses"
-                                component={ExpensesListScreen}
+                            <Stack.Screen name='Expense List' component={ExpensesListScreen}/>
+                            <Stack.Screen
+                                name='Add Expense'
+                                component={ExpenseFormScreen}
                                 initialParams={{
-                                    filter: 'recent',
+                                    formTitle: 'Add Expense',
+                                    showDelete: false,
                                 }}
-                                options={{
-                                    tabBarLabel: 'Recent',
-                                    tabBarIcon: ({color, size}) =>
-                                        <Ionicons name="hourglass" color={color} size={size}/>
-                                }}/>
-                            <BottomTab.Screen
-                                name="All Expenses"
+                            />
+                            <Stack.Screen
+                                name='Update Expense'
+                                component={ExpenseFormScreen}
                                 initialParams={{
-                                    filter: 'all',
+                                    formTitle: 'Update Expense',
+                                    showDelete: true,
+                                    // date: {selectedExpense.date},
+                                    // title: = {selectedExpense.title}
+                                    // amount = {selectedExpense.amount}
+                                    // onSubmit={updateExpenseHandler}
+                                    // onDelete={handleDeleteButton}
                                 }}
-                                component={ExpensesListScreen}
-                                options={{
-                                    tabBarIcon: ({color, size}) =>
-                                        <Ionicons name="calendar" color={color} size={size}/>
-                                }}/>
-                        </BottomTab.Navigator>
-                    </NavigationContainer>
-                </ImageBackground>
+                            />
+                        </Stack.Navigator>
+                </NavigationContainer>
+            </ImageBackground>
         </Provider>
     )
 }

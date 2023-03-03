@@ -4,7 +4,7 @@ import Colors from "../../constants/colors";
 import {formatDateString} from "../utility/date";
 import IconButton from "./iconButton";
 
-function ExpenseListItem({item, onPress}) {
+function ExpenseItem({item, onPress}) {
     const {width} = useWindowDimensions();
     return (
         <Pressable
@@ -25,7 +25,7 @@ function ExpenseListItem({item, onPress}) {
     )
 }
 
-export default ExpenseListItem;
+export default ExpenseItem;
 
 const styles = StyleSheet.create({
     expenseContainer: {
