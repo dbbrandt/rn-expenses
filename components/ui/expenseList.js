@@ -15,8 +15,13 @@ function ExpenseList({route, navigation}) {
     function ExpenseHeader() {
         if (expenses && expenses.length > 0) {
             const total = expenses.reduce((accumulator, current) => accumulator + parseFloat(current.amount), 0);
-            const recentText = showRecent ? `Showing expenses from last ${maxDays} days.` : '';
-            return <Text style={styles.headerContainer}>{recentText} Total: ${total.toFixed(2)}</Text>
+            const recentText = showRecent ? `Last ${maxDays} days.` : '';
+            return (
+                <View  style={styles.headerContainer}>
+                    <Text style={{fontSize: 12}}>{recentText}</Text>
+                    <Text>Total: ${total.toFixed(2)}</Text>
+                </View>
+            )
         } else {
             return <Text style={styles.headerContainer}>No expenses found.</Text>
         }
@@ -70,6 +75,8 @@ const styles = StyleSheet.create({
         opacity: 0.2,
     },
     headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         padding: 10,
         color: Colors.expenseText,
         fontWeight: 'bold',

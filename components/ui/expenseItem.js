@@ -33,7 +33,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 15,
         padding: 5,
-        borderRadius: 5,
+        borderRadius: 10,
+        backgroundColor: Colors.tabsMain,
+    },
+    nonPressed: {
+        shadowColor: 'grey',
+        shadowOffset: {width: 10, heigth: 4},
         backgroundColor: Colors.tabsMain,
     },
     pressed: {

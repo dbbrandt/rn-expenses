@@ -16,9 +16,7 @@ export default function App() {
     function ExpenseUpdateForm() {
         return <ExpenseFormScreen
             formTitle='Update Expense'
-            // onSubmit={updateExpenseHandler}
             showDelete={true}
-            // onDelete={handleDeleteButton}
         />
     }
 
@@ -29,10 +27,6 @@ export default function App() {
                 <View style={styles.rootScreen}>
                         <Stack.Navigator screenOptions={{
                             headerShown: false,
-                            // cardStyle: {
-                            //     presentation: 'transparentModal',
-                            // },
-                            // backgroundColor: 'white',
                             cardStyleInterpolator: (Platform.OS === 'android') ?
                                 CardStyleInterpolators.forFadeFromBottomAndroid :
                                 CardStyleInterpolators.forModalPresentationIOS
