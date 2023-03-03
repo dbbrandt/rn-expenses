@@ -1,4 +1,4 @@
-import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {ImageBackground, SafeAreaView, StyleSheet, Text, View, Platform} from 'react-native';
 import ExpenseForm from "../components/ui/expenseForm";
 import Colors from "../constants/colors";
 import {serializeDate, toDateTime} from "../components/utility/date";
@@ -121,28 +121,17 @@ const styles = StyleSheet.create({
     },
     centeredView: {
         flex: 1,
-        marginTop: 10,
-        marginHorizontal: 10,
+        marginTop: Platform.OS === 'android' ? 20 : 0,
     },
     formView: {
         flex: 1,
         backgroundColor: Colors.modelBackground,
-        borderRadius: 20,
-        // alignItems: 'center',
-        // shadowColor: 'black',
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
-        // elevation: 5,
     },
     textHeaderContainer: {
         width: '100%',
         padding: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         backgroundColor: Colors.modalHeader,
     },
     modalText: {

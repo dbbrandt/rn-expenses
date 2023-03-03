@@ -1,25 +1,14 @@
-import {StyleSheet, ImageBackground, View} from 'react-native';
+import {StyleSheet, View, Platform} from 'react-native';
 import {StatusBar} from 'expo-status-bar';
-import {NavigationContainer, DefaultTheme} from "@react-navigation/native";
+import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import {CardStyleInterpolators} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
 import {store} from "./store/store";
 import ExpensesListScreen from "./screens/ExpensesListScreen";
 import ExpenseFormScreen from "./screens/ExpenseFormScreen";
-import {serializeDate} from "./components/utility/date";
-import {addExpense} from "./store/data";
 
 const Stack = createStackNavigator();
-
-//To use a background you need to make the default theme transparent
-const navTheme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        background: 'transparent',
-    }
-}
 
 export default function App() {
 
@@ -36,16 +25,17 @@ export default function App() {
     return (
         <Provider store={store}>
             <StatusBar style="light"/>
-            <ImageBackground source={require('./assets/images/background.png')}
-                             resizeMode="cover"
-                             style={styles.rootScreen}
-                             imageStyle={styles.backgroundImage}
-            >
-                <NavigationContainer theme={navTheme}>
+            <NavigationContainer>
+                <View style={styles.rootScreen}>
                         <Stack.Navigator screenOptions={{
                             headerShown: false,
-                            cardStyle: {presentation: 'transparentModal'},
-                            cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+                            // cardStyle: {
+                            //     presentation: 'transparentModal',
+                            // },
+                            // backgroundColor: 'white',
+                            cardStyleInterpolator: (Platform.OS === 'android') ?
+                                CardStyleInterpolators.forFadeFromBottomAndroid :
+                                CardStyleInterpolators.forModalPresentationIOS
                         }}>
                             <Stack.Screen name='Expense List' component={ExpensesListScreen}/>
                             <Stack.Screen
@@ -62,25 +52,17 @@ export default function App() {
                                 initialParams={{
                                     formTitle: 'Update Expense',
                                     showDelete: true,
-                                    // date: {selectedExpense.date},
-                                    // title: = {selectedExpense.title}
-                                    // amount = {selectedExpense.amount}
-                                    // onSubmit={updateExpenseHandler}
-                                    // onDelete={handleDeleteButton}
                                 }}
                             />
                         </Stack.Navigator>
-                </NavigationContainer>
-            </ImageBackground>
+                </View>
+            </NavigationContainer>
         </Provider>
     )
 }
 const styles = StyleSheet.create({
     rootScreen: {
         flex: 1,
-    },
-    backgroundImage: {
-        opacity: 0.15,
     },
     container: {
         flex: 1,

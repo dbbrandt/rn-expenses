@@ -18,7 +18,7 @@ function ExpenseItem({item, onPress}) {
                     <Text style={styles.textFormat}>{formatDateString(item.date)}</Text>
                 </View>
                 <View style={styles.amountContainer}>
-                    <Text style={styles.amountFormat}>${parseFloat(item.amount).toLocaleString()}</Text>
+                    <Text style={styles.amountFormat}>${parseFloat(item.amount).toFixed(2)}</Text>
                 </View>
             </View>
         </Pressable>

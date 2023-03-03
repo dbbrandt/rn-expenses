@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     inputFieldContainer: {
         borderWidth: 1,
         marginVertical: 5,
-        marginHorizontal: 5,
+        // marginHorizontal: 5,
         backgroundColor: 'white',
         borderRadius: 3,
     },

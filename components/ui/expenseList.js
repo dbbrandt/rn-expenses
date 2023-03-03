@@ -1,4 +1,4 @@
-import {StyleSheet, Text} from 'react-native';
+import {ImageBackground, StyleSheet, Text} from 'react-native';
 import {daysElapsed} from "../utility/date";
 import {FlatList, View} from "react-native";
 import ExpenseItem from "./expenseItem";
@@ -16,7 +16,7 @@ function ExpenseList({route, navigation}) {
         if (expenses && expenses.length > 0) {
             const total = expenses.reduce((accumulator, current) => accumulator + parseFloat(current.amount), 0);
             const recentText = showRecent ? `Showing expenses from last ${maxDays} days.` : '';
-            return <Text style={styles.headerContainer}>{recentText} Total: ${total.toLocaleString()}</Text>
+            return <Text style={styles.headerContainer}>{recentText} Total: ${total.toFixed(2)}</Text>
         } else {
             return <Text style={styles.headerContainer}>No expenses found.</Text>
         }
@@ -39,6 +39,11 @@ function ExpenseList({route, navigation}) {
 
     return (
         <View style={styles.expenseContainer}>
+            <ImageBackground source={require('../../assets/images/background.png')}
+                             resizeMode="cover"
+                             style={styles.expenseContainer}
+                             imageStyle={styles.backgroundImage}
+            >
             <ExpenseHeader showRecent={showRecent}/>
             <View style={styles.listContainer}>
                 <FlatList data={expenses}
@@ -46,6 +51,7 @@ function ExpenseList({route, navigation}) {
                           renderItem={({item}) => expenseItem(item)}
                 />
             </View>
+            </ImageBackground>
         </View>
     )
 }
@@ -59,6 +65,9 @@ const styles = StyleSheet.create({
     listContainer: {
         flex: 1,
         alignItems: 'center',
+    },
+    backgroundImage: {
+        opacity: 0.2,
     },
     headerContainer: {
         padding: 10,
