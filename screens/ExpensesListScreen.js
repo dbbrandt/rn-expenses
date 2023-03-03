@@ -11,9 +11,9 @@ function ExpensesListScreen({route, navigation}) {
     // let filter = route.params.filter;
     const maxRecentDays = 7;
 
-    function iconcBarOption(shape) {
+    function iconcBarOption(title, shape) {
         return {
-            tabBarLabel: 'Recent',
+            tabBarLabel: title,
                 tabBarIcon: ({color, size}) =>
             <Ionicons name={shape} color={color} size={size}/>
         }
@@ -47,7 +47,7 @@ function ExpensesListScreen({route, navigation}) {
                     showRecent: true,
                     maxDays: maxRecentDays,
                 }}
-                options={iconcBarOption("hourglass")}
+                options={iconcBarOption("Recent Expenses","hourglass")}
             />
             <BottomTab.Screen
                 name="All Expenses"
@@ -55,7 +55,7 @@ function ExpensesListScreen({route, navigation}) {
                 initialParams={{
                     showRecent: false,
                 }}
-                options={iconcBarOption("calendar")}
+                options={iconcBarOption("All Expenses","calendar")}
             />
         </BottomTab.Navigator>
     )
